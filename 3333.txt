@@ -1,0 +1,151 @@
+		Завдання
+4.2.1 В новому проекті створити головну форму, для якої змінити: колір, положення, стиль, додати
+власний значок форми, прозорість. Додати в проект другу форму. На першу форму додати кнопку,
+при натисненні на яку на екрані відображається друга форма. Виконати індивідуальне завдання.
+4.2.2 Створити за допомогою дизайнера сітку з 5 колонками. Змінити стиль всіх клітинок та
+заголовків сітки. Змінити стиль меж сітки. Закріпити другий стовпець. Задати ширину першого
+стовпця значенням 15. Додати програмним чином 3 рядка даних в сітку. Змінити програмним
+чином значення клітини з індексами 0 та 2. Додати програмний код, який при натисненні на
+комірці сітки виводить її індекси в заголовок форми.
+
+Варіант 10:
+а)на першу форму додати компонент Label1 та Label2 та другу кнопку, яка обчислює значення (а + b) та записує в Label1, (а - b) та записує в Label2
+б)на першу форму додати третю кнопку, яка активізує другу форму (ця форма спочатку є неактивною)
+		 
+
+
+		Форма 1
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PR2
+{
+    public partial class Form1 : Form
+    {
+        private int a = 10;
+        private int b = 5;
+        private Label label1 = new Label();
+        private Label label2 = new Label();
+        public Form2 secondForm = new Form2();
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            // Настройки основной формы
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = System.Drawing.Color.LightBlue;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.Icon = new System.Drawing.Icon(@"D:\Program Files\Xilper.ico");
+            this.Opacity = 0.9;
+
+            // Кнопка для открытия второй формы
+            Button button = new Button();
+            button.Text = "Открыть вторую форму";
+            button.Size = new System.Drawing.Size(150, 30);
+            button.Location = new System.Drawing.Point(100, 100);
+            button.Click += new EventHandler(Button_Click);
+            this.Controls.Add(button);
+            //Настройка Label
+            label1.Text = "Результат (a + b): ";
+            label1.Location = new System.Drawing.Point(100, 200);
+            label1.AutoSize = true;
+            label2.Text = "Результат (a - b): ";
+            label2.Location = new System.Drawing.Point(100, 250);
+            label2.AutoSize = true;
+            this.Controls.Add(label1);
+            this.Controls.Add(label2);
+            // Кнопка для вычислений
+            Button calcButton = new Button();
+            calcButton.Text = "Вычислить a + b и a - b";
+            calcButton.Size = new System.Drawing.Size(200, 30);
+            calcButton.Location = new System.Drawing.Point(100, 150);
+            calcButton.Click += new EventHandler(CalcButton_Click);
+            this.Controls.Add(calcButton);
+            // Вторая форма изначально неактивна
+            secondForm.Enabled = false;
+
+            Button activateFormButton = new Button();
+            activateFormButton.Text = "Активировать вторую форму";
+            activateFormButton.Size = new Size(200, 30);
+            activateFormButton.Location = new Point(100, 300);
+            activateFormButton.Click += ActivateFormButton_Click;
+            this.Controls.Add(activateFormButton);
+        }
+        // Открытие второй формы
+        private void Button_Click(object sender, EventArgs e)
+        {
+            secondForm.Show();
+        }
+        //Расчет ИДЗ
+        private void CalcButton_Click(object sender, EventArgs e)
+        {
+            int sum = a + b;
+            int difference = a - b;
+            label1.Text = "Результат (a + b): "+sum.ToString();
+            label2.Text = "Результат (a - b): " + difference.ToString();
+        }
+        // Активировать форму ИДЗ
+        private void ActivateFormButton_Click(object sender, EventArgs e)
+        {
+            secondForm.Enabled = true; 
+        }
+    }
+}
+
+
+		Форма 2
+
+
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PR2
+{
+    public partial class Form2 : Form
+    {
+        public Form2()
+        {
+            InitializeComponent();
+            this.BackColor = System.Drawing.Color.LightGreen;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.Text = "Друга форма";
+
+            DataGridView dgv = new DataGridView();
+            dgv.ColumnCount = 5;
+            dgv.Dock = DockStyle.Fill;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font(dgv.Font, FontStyle.Bold);
+            dgv.DefaultCellStyle.BackColor = Color.LightGray;
+            dgv.DefaultCellStyle.ForeColor = Color.Black;
+            dgv.DefaultCellStyle.Font = new Font("Arial", 10);
+            dgv.GridColor = Color.Black;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dgv.Columns[1].Frozen = true;
+            dgv.Columns[0].Width = 15;
+            dgv.Rows.Add("1", "Дані1", "Дані2", "Дані3", "Дані4");
+            dgv.Rows.Add("2", "Дані5", "Дані6", "Дані7", "Дані8");
+            dgv.Rows.Add("3", "Дані9", "Дані10", "Дані11", "Дані12");
+            dgv.Rows[0].Cells[2].Value = "Змінене значення";
+            this.Controls.Add(dgv);
+            dgv.CellClick += new DataGridViewCellEventHandler(Dgv_CellClick);
+        }
+        private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            this.Text = "Вибрана клітина: Рядок "+e.RowIndex.ToString()+", Стовпець "+e.ColumnIndex.ToString();
+        }
+    }
+}

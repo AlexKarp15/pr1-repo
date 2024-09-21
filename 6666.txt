@@ -1,0 +1,196 @@
+				Форма 1
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PR3
+{
+    
+
+    public partial class Form1 : Form
+    {
+        private double m = -13.10407;
+        private double n = 83.34577;
+        public Form2 secondForm = new Form2();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            double E, Y, x, y;
+            Y = (Math.Pow(m, 2) - Math.Sqrt(n - 1)) / ((1 / Math.Pow(m, 3))-3*m*n);
+            textBox1.Text= Y.ToString();
+            x = double.Parse(textBox2.Text);
+            y = double.Parse(textBox3.Text);
+            E = x - Math.Pow(10, Math.Sin(x))+Math.Cos(x-y);
+            textBox4.Text = E.ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            secondForm.Show();
+        }
+    }
+}
+
+			Форма 2
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PR3
+{
+    public partial class Form2 : Form
+    {
+        public Form3 thirdForm = new Form3();
+        public Form2()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            double zinaMonitora, summa, zinaPrinter = 800;
+            zinaMonitora = double.Parse(textBox1.Text);
+            summa = zinaMonitora + zinaPrinter;
+            if (summa>2000)
+                summa -= 0.15*summa;
+            else if (summa>1000)
+                summa -= 0.1 * summa;
+            textBox2.Text = summa.ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            thirdForm.Show();
+        }
+    }
+}
+
+				Форма 3
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PR3
+{
+    public partial class Form3 : Form
+    {
+        public Form4 fourthForm = new Form4();
+        public Form3()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            double N;
+            N = double.Parse(textBox1.Text);
+            for (int i = 0; i < N; i += 1)
+                MessageBox.Show("Карпук:19:4.56");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            fourthForm.Show();
+        }
+    }
+}
+
+
+					Форма 4
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace PR3
+{
+    public partial class Form4 : Form
+    {
+        private string name;
+        private int weight, price;
+        public Form4()
+        {
+            InitializeComponent();
+            dataGridView1.Columns.Add("Name", "Назва фрукта");
+            dataGridView1.Columns.Add("Weight", "Вага (г)");
+            dataGridView1.Columns.Add("Price", "Ціна (грн)");
+
+            // Додаємо 10 фруктів до сітки
+            dataGridView1.Rows.Add("Яблуко", 50, 15);
+            dataGridView1.Rows.Add("Банан", 120, 25);
+            dataGridView1.Rows.Add("Апельсин", 100, 20);
+            dataGridView1.Rows.Add("Ківі", 50, 30);
+            dataGridView1.Rows.Add("Мандарин", 60, 18);
+            dataGridView1.Rows.Add("Груша", 200, 22);
+            dataGridView1.Rows.Add("Ананас", 1500, 150);
+            dataGridView1.Rows.Add("Персик", 120, 35);
+            dataGridView1.Rows.Add("Виноград", 100, 40);
+            dataGridView1.Rows.Add("Кокос", 1000, 120);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+        foreach (DataGridViewRow row in dataGridView1.Rows)
+    {
+        // Перевірка на наявність даних у комірці "Weight"
+        if (row.Cells["Weight"].Value != null)
+        {
+            // Спроба конвертації значення в int
+            if (int.TryParse(row.Cells["Weight"].Value.ToString(), out weight))
+            {
+                // Перевірка на вагу 50 або 100 грамів
+                if (weight == 50 || weight == 100)
+                {
+                    // Отримання назви та ціни
+                    string name = row.Cells["Name"].Value.ToString();
+                    decimal price = decimal.Parse(row.Cells["Price"].Value.ToString());
+
+                    // Додавання у listBox
+                    listBox1.Items.Add(name.ToString()+":"+price.ToString()+" грн");
+                }
+            }
+        }
+    }
+    }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            name = textBox1.Text;
+            weight = int.Parse(textBox2.Text);
+            price = int.Parse(textBox3.Text);
+            dataGridView1.Rows.Add(name, weight, price);
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox3.Clear();
+        }
+    }
+}
